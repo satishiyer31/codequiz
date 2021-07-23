@@ -10,8 +10,10 @@ var question = document.createElement("p");
 var nextBtn = document.createElement("input");
 var timeEl = document.querySelector("#timer");
 var timeLeft = 100;
-// var rootEl = document.querySelector("body");
+var rootEl = document.querySelector("body");
 var divEl = document.createElement("div");
+var scoreDisplayed = false;
+var timerInterval;
 
 
 
@@ -71,6 +73,7 @@ startQuiz.addEventListener("click", function(){
    
     
     nextBtn.type ="button";
+    nextBtn.setAttribute("class","button");
     nextBtn.value = "Confirm & Next";
     document.body.appendChild(nextBtn);
 
@@ -142,11 +145,12 @@ nextBtn.addEventListener("click", function(){
 
 function setTime() {
     // Sets interval in variable
-    var timerInterval = setInterval(function() {
-      timeLeft--;
+    timerInterval = setInterval(function() {
+      if (timeLeft>0)
+        timeLeft--;
       timeEl.textContent = timeLeft;
   
-      if(timeLeft <= 0) {
+      if(timeLeft == 0) {
         // Stops execution of action at set interval
         clearInterval(timerInterval);
         // Calls function to create and append image
@@ -159,6 +163,8 @@ function setTime() {
   // Function to create and append colorsplosion image
   function sendMessage() {
     timeEl.textContent = "Time is up";
+    if (scoreDisplayed = false)
+    displayscores();
     
   
   }
@@ -170,8 +176,26 @@ function setTime() {
         var score = document.createElement("p");
         score.textContent = "Your score is: " + timeLeft;
         document.body.appendChild (score);
-        timeLeft = 0;
+        scoreDisplayed = true;
+        clearInterval(timerInterval);
+        var formEl= document.createElement("form");
+        var playerInitial = document.createElement("input");
+        playerInitial.type = "textbox";
+        var submitScore = document.createElement("button");
+        submitScore.textContent = "Submit Score";
+        document.body.appendChild(formEl);
+        formEl.appendChild(playerInitial);
+        formEl.appendChild(submitScore);
+        rootEl.addEventListener("submit", function(event){
+           
+            console.log("Inside the form");
+            localStorage.setItem("user",playerInitial.value);
+            localStorage.setItem("score",timeLeft); 
+            window.location.href="index2.html";
+            
+        })
+        prevent
   }
   
-  
 
+ 
